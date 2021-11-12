@@ -1,0 +1,13 @@
+{
+  "name": "square-bit/views_oai_pmh",
+  "type": "drupal-module",
+  "description": "Views plugins to publish data through the OAI-PMH protocol.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0-or-later",
+  "minimum-stability": "dev",
+  "require": {
+    "symfony/psr-http-message-bridge": "^2.1",
+    "picturae/oai-pmh": "^0.5.20",
+    "nyholm/psr7": "^1.4"
+  }
+}
