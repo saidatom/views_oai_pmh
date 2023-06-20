@@ -8,6 +8,6 @@
   "require": {
     "symfony/psr-http-message-bridge": "^2.1",
     "picturae/oai-pmh": "^0.5.20",
-    "nyholm/psr7": "^1.4"
+    "nyholm/psr7": "^1.6"
   }
 }

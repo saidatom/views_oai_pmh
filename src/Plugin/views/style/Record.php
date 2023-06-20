@@ -189,7 +189,9 @@ class Record extends StylePluginBase implements CacheableDependencyInterface {
       // Getting all the elements.
       $elements = $this->rowToXml->transform($row);
 
-      $element_or_null = array_shift($elements);
+      $element_or_null = [
+        array_keys($elements)[0] => reset($elements)
+      ];
       // Insure we're adding (union) arrays, not null.
       $element = $element_or_null ? $element_or_null : array();
       // Getting only the root elements, we need to remove the root elements
