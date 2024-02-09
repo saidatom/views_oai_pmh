@@ -13,7 +13,7 @@ class Provider extends BaseProvider implements MarkupInterface {
   /**
    *
    */
-  public function jsonSerialize() {
+  public function jsonSerialize(): mixed {
     return '';
   }
 
