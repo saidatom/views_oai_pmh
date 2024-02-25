@@ -177,10 +177,14 @@ class Record extends StylePluginBase implements CacheableDependencyInterface {
   public function render() {
     $rows = $this->getResultRows();
 
-    /** @var \Drupal\views_oai_pmh\Plugin\MetadataPrefixInterface $currentPrefixPlugin */
-    $currentPrefixPlugin = $this->prefixManager->createInstance(
-      $this->displayHandler->getCurrentMetadataPrefix()
-    );
+    try {
+      /** @var \Drupal\views_oai_pmh\Plugin\MetadataPrefixInterface $currentPrefixPlugin */
+      $currentPrefixPlugin = $this->prefixManager->createInstance(
+        $this->displayHandler->getCurrentMetadataPrefix()
+      );
+    } catch(\Exception $e) {
+      return;
+    }
 
     $records = [];
     foreach ($rows as $row_id => $row) {
@@ -190,7 +194,7 @@ class Record extends StylePluginBase implements CacheableDependencyInterface {
       $elements = $this->rowToXml->transform($row);
 
       $element_or_null = [
-        array_keys($elements)[0] => reset($elements)
+        array_keys($elements)[0] ?? NULL => reset($elements)
       ];
       // Insure we're adding (union) arrays, not null.
       $element = $element_or_null ? $element_or_null : array();
@@ -202,7 +206,7 @@ class Record extends StylePluginBase implements CacheableDependencyInterface {
       $data = $root_elements + $elements;
 
       // path id for datacite, dcc or dc
-      $path_id = (!empty($data['identifier']))? $data['identifier']['#'] : $data['dc:identifier']['#'];
+      $path_id = (!empty($data['identifier'])) ? $data['identifier']['#'] : (!empty($data['dc:identifier']) ? $data['dc:identifier']['#'] : '');
 
       $xmlDoc = new \DOMDocument();
       $xmlDoc->loadXML($this->serializer->encode($data, 'xml', [
@@ -427,11 +431,11 @@ class Record extends StylePluginBase implements CacheableDependencyInterface {
       try {
         $value = $this->view->style_plugin->getField($row_id, $id);
 
-        if ($field->option['hide_empty'] && empty($value)) {
+        if ($field->options['hide_empty'] && empty($value)) {
           continue;
         }
 
-        if(isset($field->option['type']) && $field->options['type'] == "datetime_default") {
+        if(isset($field->options['type']) && $field->options['type'] == "datetime_default") {
           $value = \Drupal::service('date.formatter')->format(
             strtotime($value), $field->options['settings']['format_type']
           );
@@ -467,7 +471,8 @@ class Record extends StylePluginBase implements CacheableDependencyInterface {
    * @return array|null
    */
   protected function getFieldKeyAlias($id) {
-    $fields = $this->options['field_mappings'][$this->displayHandler->getCurrentMetadataPrefix()];
+    $prefix = $this->displayHandler->getCurrentMetadataPrefix();
+    $fields = $this->options['field_mappings'][$prefix] ?? NULL;
 
     if (isset($fields) && isset($fields[$id]) && $fields[$id] !== 'none') {
       return $fields[$id];

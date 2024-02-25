@@ -126,7 +126,8 @@ class FormatRowToXml {
         $this->depth($alias, $current_value)
       );
     }
-    $output = array_map(array($this, "trimmingKeys"), $output);
+
+    $output = array_map(fn (array $item): array => $this->trimmingKeys($item), $output);
 
     return $output;
   }
@@ -147,7 +148,8 @@ class FormatRowToXml {
           unset($array[$key]);
         }
       }
-      return array_map(array($this, "trimmingKeys"), $array);
+
+      return array_map(fn (mixed $item): mixed => $this->trimmingKeys($item), $array);
     }
     else {
       return $array;

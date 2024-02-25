@@ -32,6 +32,8 @@ class Repository implements RepositoryInterface {
 
   protected $totalRecords = 0;
 
+  protected array $formats = [];
+
   /**
    *
    */
