@@ -1,7 +1,7 @@
 name: Views OAI-PMH
 type: module
 description: Views plugins to publish data through the OAI-PMH protocol.
-core_version_requirement: ^8.7.7 || ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: Views
 dependencies:
   - drupal:views
