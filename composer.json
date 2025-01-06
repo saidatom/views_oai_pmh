@@ -6,7 +6,7 @@
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "require": {
-    "symfony/psr-http-message-bridge": "^6.4",
+    "symfony/psr-http-message-bridge": "^6.4 || ^7.2",
     "square-bit/oai-pmh": "^0.2",
     "nyholm/psr7": "^1.8"
   }
